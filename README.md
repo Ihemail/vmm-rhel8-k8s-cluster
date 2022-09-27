@@ -6,23 +6,23 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
 
 1. Load single/Multi Node JCNR/k8s topology file in vmm pod and start the topology:
 
-  Single node K8s Cluster(Master only):
-  ```ruby
-  podxx-vmm:~ $ vmm config vmm-jcnr-1.cfg -g vmm-default
-  podxx-vmm:~ $ vmm start
-  ```
-  Multi node K8s Cluster(Master and Worker node):
-  ```ruby
-  podxx-vmm:~ $ vmm config vmm-jcnr-2.cfg -g vmm-default
-  podxx-vmm:~ $ vmm start
-  ```
-  ```ruby
-  podxx-vmm:~> vmm ip
-  vm_rhel84_1 10.49.122.155
-  vmx_1 10.49.122.45
-  vmx_1_MPC0 10.49.122.101
-  vm_openwrt_1 10.49.122.35
-  ```
+    Single node K8s Cluster(Master only):
+    ```ruby
+    podxx-vmm:~ $ vmm config vmm-jcnr-1.cfg -g vmm-default
+    podxx-vmm:~ $ vmm start
+    ```
+    Multi node K8s Cluster(Master and Worker node):
+    ```ruby
+    podxx-vmm:~ $ vmm config vmm-jcnr-2.cfg -g vmm-default
+    podxx-vmm:~ $ vmm start
+    ```
+    ```ruby
+    podxx-vmm:~> vmm ip
+    vm_rhel84_1 10.49.122.155
+    vmx_1 10.49.122.45
+    vmx_1_MPC0 10.49.122.101
+    vm_openwrt_1 10.49.122.35
+    ```
 
 2. All the necessary scripts (for both default contained & docker-ce container runtime) are avaiable under folder shell.
 
@@ -48,7 +48,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
 
 5. For Worker node/s transfer the shell script 'k8s-worker.sh' or 'k8s-docker-ce-worker.sh' to 'vm_rhel84_x'(worker) node and execute after adding master IP & token details:
   
-    containerd as k8s container runtime:
+  containerd as k8s container runtime:
   ```ruby
   [root@rhel85 ~]# vi k8s-worker.sh
   #!/bin/bash
