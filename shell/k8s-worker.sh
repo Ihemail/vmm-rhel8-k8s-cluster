@@ -73,6 +73,8 @@ echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-ce
  sleep 40
  sshpass -p 'contrail123' scp -o stricthostkeychecking=no -r root@$master_ip:/root/.kube $HOME/
  kubectl label node $hostname node-role.kubernetes.io/worker=
+ curl -sS https://webinstall.dev/k9s | bash
+ export PATH="/root/.local/bin:$PATH"
  kubectl get node -A -o wide
  kubectl get node --show-labels
  sleep 30
@@ -80,6 +82,7 @@ echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-ce
 
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 echo 'alias ku=kubectl' >> ~/.bashrc
+echo 'alias k=k9s' >> ~/.bashrc
 
 echo '\ =====  K8s Cluter Join(Worker) installation Complete :)  ===== \'
 
