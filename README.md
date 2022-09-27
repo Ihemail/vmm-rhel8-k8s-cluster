@@ -6,12 +6,12 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
 
 1. Load single/Multi Node JCNR/k8s topology file in vmm pod and start the topology:
 
-    Single node K8s Cluster(Master only):
+  Single node K8s Cluster(Master only):
   ```ruby
   podxx-vmm:~ $ vmm config vmm-jcnr-1.cfg -g vmm-default
   podxx-vmm:~ $ vmm start
   ```
-    Multi node K8s Cluster(Master and Worker node):
+  Multi node K8s Cluster(Master and Worker node):
   ```ruby
   podxx-vmm:~ $ vmm config vmm-jcnr-2.cfg -g vmm-default
   podxx-vmm:~ $ vmm start
@@ -37,11 +37,11 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
 
 4. Transfer the shell script 'k8s-master.sh' or 'k8s-docker-ce-master.sh' to 'vm_rhel84_1'(master) node and execute:
   
-    containerd as k8s container runtime:
+  containerd as k8s container runtime:
   ```ruby
   [root@rhel85 ~]# sh k8s-master.sh
   ```
-    docker-ce as k8s container runtime:
+  docker-ce as k8s container runtime:
   ```ruby
   [root@rhel85 ~]# sh k8s-docker-ce-master.sh
   ```
@@ -77,7 +77,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
 
 5. Verify the K8s Cluster is up and pods are running properly in both Master & Worker nodes:
 
-    @Master node:
+  @Master node:
   ```ruby
   [root@rhel84 ~]# kubectl get nodes -owide
   NAME            STATUS   ROLES                  AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
@@ -99,7 +99,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
   [root@rhel84 ~]#
   ```
   
-    @Worker node:
+  @Worker node:
   ```ruby
   [root@rhel85 ~]# kubectl get node -o wide
   NAME            STATUS   ROLES                  AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
