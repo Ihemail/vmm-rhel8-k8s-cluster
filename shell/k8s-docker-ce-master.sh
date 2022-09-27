@@ -90,6 +90,8 @@ kubeadm token create --print-join-command
  kubectl taint nodes --all node-role.kubernetes.io/control-plane-
  #kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
  kubectl label node $hostname node-role.kubernetes.io/master=
+ curl -sS https://webinstall.dev/k9s | bash
+ export PATH="/root/.local/bin:$PATH"
  kubectl get node -A -o wide
  kubectl get node --show-labels
  sleep 30 
@@ -98,6 +100,8 @@ kubeadm token create --print-join-command
 echo "\ =====  API Server :: eth0 :: ($eth0ip)  ===== \ "
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 echo 'alias ku=kubectl' >> ~/.bashrc
+echo 'alias k=k9s' >> ~/.bashrc
+
 echo '\ =====  K8s Cluter(Master) installation Complete :)  ===== \'
 
 
