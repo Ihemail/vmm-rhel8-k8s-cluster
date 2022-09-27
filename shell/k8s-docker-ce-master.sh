@@ -104,4 +104,3 @@ echo 'alias k=k9s' >> ~/.bashrc
 
 echo '\ =====  K8s Cluter(Master) installation Complete :)  ===== \'
 
-
