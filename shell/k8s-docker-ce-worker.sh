@@ -6,10 +6,8 @@
  export master_token_hash=sha256:1234xxxx
 
  ## docker-ce :: ##
- #subscription-manager unregister
- #subscription-manager clean
- #subscription-manager register --username xxxx --password xxxx --force
- #subscription-manager attach --auto
+ subscription-manager repos --disable fast-datapath-for-rhel-8-x86_64-rpms  
+ subscription-manager repos --enable fast-datapath-for-rhel-8-x86_64-rpms
  systemctl stop firewalld
  systemctl disable firewalld
  sudo sed -i '/ swap / s/^/#/' /etc/fstab
