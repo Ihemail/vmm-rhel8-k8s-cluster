@@ -35,7 +35,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
     [root@rhel84 ~]# reboot
     ```
 
-4. Transfer the shell script 'k8s-master.sh' or 'k8s-docker-ce-master.sh' to 'vm_rhel84_1'(master) node and execute:
+4. Transfer the shell script 'k8s-master.sh' or 'k8s-docker-ce-master.sh' or 'k8s-crio-master.sh' to 'vm_rhel84_1'(master) node and execute:
   
     containerd as k8s container runtime:
     ```ruby
@@ -45,8 +45,12 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
     ```ruby
     [root@rhel85 ~]# sh k8s-docker-ce-master.sh
     ```
+    cri-o as k8s container runtime:
+    ```ruby
+    [root@rhel85 ~]# sh k8s-crio-master.sh
+    ```
 
-5. For Worker node/s transfer the shell script 'k8s-worker.sh' or 'k8s-docker-ce-worker.sh' to 'vm_rhel84_x'(worker) node and execute after adding master IP & token details:
+5. For Worker node/s transfer the shell script 'k8s-worker.sh' or 'k8s-docker-ce-worker.sh' or 'k8s-crio-worker.sh' to 'vm_rhel84_x'(worker) node and execute after adding master IP & token details:
   
     containerd as k8s container runtime:
     ```ruby
@@ -61,7 +65,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
     . . .
     [root@rhel85 ~]# sh k8s-worker.sh
     ```
-      docker-ce as k8s container runtime:
+    docker-ce as k8s container runtime:
     ```ruby
     [root@rhel85 ~]# vi k8s-docker-ce-worker.sh
     #!/bin/bash
@@ -73,6 +77,19 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
      
     . . .
     [root@rhel85 ~]# sh k8s-docker-ce-worker.sh
+    ```
+    cri-o as k8s container runtime:
+    ```ruby
+    [root@rhel85 ~]# vi k8s-crio-worker.sh
+    #!/bin/bash
+    
+     ## -- Update Master Node IP and Token in Shell variable before executing the script -- ##
+     export master_ip=10.49.122.155
+     export master_token=1234xxxx
+     export master_token_hash=sha256:1234xxxx
+     
+    . . .
+    [root@rhel85 ~]# sh k8s-crio-worker.sh
     ```
 
 5. Verify the K8s Cluster is up and pods are running properly in both Master & Worker nodes:
