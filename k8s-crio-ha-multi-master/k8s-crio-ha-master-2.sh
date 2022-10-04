@@ -1,6 +1,6 @@
 #!/bin/bash
 
- ## -- Update Master Node IP and Token in Shell variable before executing the script -- ##
+ ## -- Update Load-balancer, Master-1 Node IP & token details in Shell variable before executing the script -- ##
  export master_ip=10.49.122.155          ## load-balancer(haproxy) IP
  export master_1_ip=10.49.122.55 
  export master_token=1234xxxx
