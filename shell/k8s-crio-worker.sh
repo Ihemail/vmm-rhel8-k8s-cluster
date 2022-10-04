@@ -15,7 +15,7 @@
  sudo setenforce 0
  sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
  sed -i '/subscription-manager/d' /root/k8s-worker.sh
- sudo sed -i 's/reboot now#/#reboot now/g' /root/k8s-worker.sh
+ sudo sed -i 's/reboot now#/#reboot now/g' /root/k8s-crio-worker.sh
  #reboot now#
 
 hostname=$(hostname)
