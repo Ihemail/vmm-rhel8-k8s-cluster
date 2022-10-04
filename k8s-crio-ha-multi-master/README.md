@@ -1,6 +1,6 @@
 # vmm-rhel8-k8s-crio-ha-cluster
 
-# VMM K8s HA Cluster(crio, multi-master) - Multi Node Deployment via single Shell Script
+# VMM K8s HA Cluster(crio, multi-master) - Multi Node Deployment via Shell Script
 
 Note: Multiple node Shell Scripts are customized to run in RHEL8 console(preferably) bash shell. 
 
