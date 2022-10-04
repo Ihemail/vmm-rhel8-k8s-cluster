@@ -6,25 +6,23 @@ Note: Multiple node Shell Scripts are customized to run in RHEL8 console(prefera
 
 1. Load single/Multi Node JCNR/k8s topology file in vmm pod and start the topology:
 
-    Single node K8s Cluster(Master only):
+    Multi node K8s Cluster(2 x Master and 1 x Worker node):
     ```ruby
-    podxx-vmm:~ $ vmm config vmm-jcnr-1.cfg -g vmm-default
-    podxx-vmm:~ $ vmm start
-    ```
-    Multi node K8s Cluster(Master and Worker node):
-    ```ruby
-    podxx-vmm:~ $ vmm config vmm-jcnr-2.cfg -g vmm-default
+    podxx-vmm:~ $ vmm config vmm-jcnr-4-ha.cfg -g vmm-default
     podxx-vmm:~ $ vmm start
     ```
     ```ruby
     podxx-vmm:~> vmm ip
-    vm_rhel84_1 10.49.122.155
+    vm_rhel84_0 10.49.122.155              ## Load-balancer
+    vm_rhel84_1 10.49.122.55               ## Master-1
+    vm_rhel84_2 10.49.122.56               ## Master-2
+    vm_rhel84_3 10.49.122.57               ## Worker-1
     vmx_1 10.49.122.45
     vmx_1_MPC0 10.49.122.101
     vm_openwrt_1 10.49.122.35
     ```
 
-2. All the necessary scripts (for both default contained & docker-ce container runtime) are avaiable under folder shell.
+2. All the necessary scripts(*.sh) for all 4 nodes vm_rhel84_0,1,2,3(with crio as container runtime) are avaiable under this folder.
 
 3. If you need to change the server hostname then modofy the '/etc/hostname' file and reboot the server via conosle:
    [login: root/contrail123]
@@ -35,94 +33,113 @@ Note: Multiple node Shell Scripts are customized to run in RHEL8 console(prefera
     [root@rhel84 ~]# reboot
     ```
 
-4. Transfer the shell script 'k8s-master.sh' or 'k8s-docker-ce-master.sh' or 'k8s-crio-master.sh' to 'vm_rhel84_1'(master) node and execute:
+4. Prepare the load-banacer for kubernetes api endpoint load sharing:
+   Transfer shell script 'k8s-crio-load-balance.sh' to 'vm_rhel84_0'(load-balancer) node and execute after adding load-balancer & master_ip details
   
-    containerd as k8s container runtime:
+    update the load-balancer's eth0 IP address as "master_ip" and master-1,2 ip details:
     ```ruby
-    [root@rhel85 ~]# sh k8s-master.sh
-    ```
-    docker-ce as k8s container runtime:
-    ```ruby
-    [root@rhel85 ~]# sh k8s-docker-ce-master.sh
-    ```
-    cri-o as k8s container runtime:
-    ```ruby
-    [root@rhel85 ~]# sh k8s-crio-master.sh
+    [root@rhel85 ~]# vi k8s-crio-load-balance.sh
+    #!/bin/bash
+
+     ## -- Update Load-balancer and Master Nodes IP details in Shell variable before executing the script -- ##
+     export master_ip=10.49.122.155          ## [ eth0 ] load-balancer's(haproxy) IP
+     export master_1_ip=10.49.122.55
+     export master_2_ip=10.49.122.56
+     
+     . . .
+    [root@rhel85 ~]# sh k8s-crio-load-balance.sh
     ```
 
-5. For Worker node/s transfer the shell script 'k8s-worker.sh' or 'k8s-docker-ce-worker.sh' or 'k8s-crio-worker.sh' to 'vm_rhel84_x'(worker) node and execute after adding master IP & token details:
+5. Prepare the master-1 node:
+   Transfer shell script 'k8s-crio-ha-master-1.sh' to 'vm_rhel84_1'(master-1) node and execute after adding master_ip details
+    
+    update the load-balancer's eth0 IP address as "master_ip":
+    ```ruby
+    [root@rhel85 ~]# vi k8s-crio-ha-master-1.sh
+    #!/bin/bash
+
+     ## -- Update load-balancer IP as Master IP in Shell variable before executing the script -- ##
+     export master_ip=10.49.122.155          ## load-balancer(haproxy) IP
+     
+     . . .
+    [root@rhel85 ~]# sh k8s-crio-ha-master-1.sh
+    ```
+
+6. Prepare the master-2 node:
+   Transfer shell script 'k8s-crio-ha-master-2.sh' to 'vm_rhel84_2'(master-2) node and execute after adding load-balancer & master_1_ip details
   
-    containerd as k8s container runtime:
+    update the load-balancer's eth0 IP address as "master_ip", master-1 ip & token details:
     ```ruby
-    [root@rhel85 ~]# vi k8s-worker.sh
+    [root@rhel85 ~]# vi k8s-crio-ha-master-2.sh
     #!/bin/bash
-    
-     ## -- Update Master Node IP and Token in Shell variable before executing the script -- ##
-     export master_ip=10.49.122.155
+
+     ## -- Update Load-balancer, Master-1 Node IP & token details in Shell variable before executing the script -- ##
+     export master_ip=10.49.122.155          ## load-balancer(haproxy) IP
+     export master_1_ip=10.49.122.55 
      export master_token=1234xxxx
      export master_token_hash=sha256:1234xxxx
-     
-    . . .
-    [root@rhel85 ~]# sh k8s-worker.sh
-    ```
-    docker-ce as k8s container runtime:
-    ```ruby
-    [root@rhel85 ~]# vi k8s-docker-ce-worker.sh
-    #!/bin/bash
-    
-     ## -- Update Master Node IP and Token in Shell variable before executing the script -- ##
-     export master_ip=10.49.122.155
-     export master_token=1234xxxx
-     export master_token_hash=sha256:1234xxxx
-     
-    . . .
-    [root@rhel85 ~]# sh k8s-docker-ce-worker.sh
-    ```
-    cri-o as k8s container runtime:
-    ```ruby
-    [root@rhel85 ~]# vi k8s-crio-worker.sh
-    #!/bin/bash
-    
-     ## -- Update Master Node IP and Token in Shell variable before executing the script -- ##
-     export master_ip=10.49.122.155
-     export master_token=1234xxxx
-     export master_token_hash=sha256:1234xxxx
-     
-    . . .
-    [root@rhel85 ~]# sh k8s-crio-worker.sh
+     export cert_key=1234xxxx
+
+     . . .
+    [root@rhel85 ~]# sh k8s-crio-ha-master-2.sh
     ```
 
-5. Verify the K8s Cluster is up and pods are running properly in both Master & Worker nodes:
-
-    @Master node:
+7. Prepare the Worker-x node/s:
+   Transfer shell script 'k8s-crio-ha-worker.sh' to 'vm_rhel84_3'(worker-1) node and execute after adding load-balancer & master_1_ip details
+  
+    update the load-balancer's eth0 IP address as "master_ip", master-1 ip & token details:
     ```ruby
-    [root@rhel84 ~]# kubectl get nodes -owide
-    NAME            STATUS   ROLES                  AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
-    rhel84          Ready    control-plane,master   26m   v1.25.2   10.49.122.155   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
-    rhel85          Ready    worker                 62s   v1.25.2   10.53.59.47     <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
-    [root@rhel84 ~]# kubectl get pods -A
-    NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE
-    kube-system   calico-kube-controllers-58dbc876ff-8blbk   1/1     Running   0          54m
-    kube-system   calico-node-7mp6f                          1/1     Running   0          29m
-    kube-system   calico-node-8zrr4                          1/1     Running   0          54m
-    kube-system   coredns-565d847f94-fmmsg                   1/1     Running   0          54m
-    kube-system   coredns-565d847f94-q2fz6                   1/1     Running   0          54m
-    kube-system   etcd-rhel84                                1/1     Running   0          54m
-    kube-system   kube-apiserver-rhel84                      1/1     Running   0          54m
-    kube-system   kube-controller-manager-rhel84             1/1     Running   0          54m
-    kube-system   kube-proxy-kfh5f                           1/1     Running   0          29m
-    kube-system   kube-proxy-nhchf                           1/1     Running   0          54m
-    kube-system   kube-scheduler-rhel84                      1/1     Running   0          54m
-    [root@rhel84 ~]#
+    [root@rhel85 ~]# vi k8s-crio-ha-worker.sh
+    #!/bin/bash
+    
+     ## -- Update Load-balancer, Master-1 Node IP & token details in Shell variable before executing the script -- ##
+     export master_ip=10.49.122.155          ## load-balancer(haproxy) IP
+     export master_1_ip=10.49.122.55
+     export master_token=1234xxxx
+     export master_token_hash=sha256:1234xxxx
+     
+    . . .
+    [root@rhel85 ~]# sh k8s-crio-ha-worker.sh
+    ```
+
+8. Verify the K8s HA Cluster is up and pods are running properly in both Master & Worker nodes:
+
+    @Master-1 node:
+    ```ruby
+    [root@rhel84-master-1 ~]# kubectl get nodes -o wide
+    NAME              STATUS   ROLES                  AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
+    rhel84-master-1   Ready    control-plane,master   11m     v1.25.2   10.49.122.55    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    rhel85-master-2   Ready    control-plane,master   2m8s    v1.25.2   10.49.122.56    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    rhel86-worker     Ready    worker                 3m13s   v1.25.2   10.49.122.57    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    [root@rhel84-master-1 ~]# kubectl get pods -A
+    NAMESPACE     NAME                                       READY   STATUS    RESTARTS        AGE
+    kube-system   calico-kube-controllers-58dbc876ff-hm9cc   1/1     Running   0               11m
+    kube-system   calico-node-2mznf                          1/1     Running   0               11m
+    kube-system   calico-node-bc8sc                          1/1     Running   0               3m38s
+    kube-system   calico-node-m9dpk                          1/1     Running   0               2m33s
+    kube-system   coredns-565d847f94-64zqh                   1/1     Running   0               12m
+    kube-system   coredns-565d847f94-frbth                   1/1     Running   0               12m
+    kube-system   etcd-rhel84-master-1                       1/1     Running   0               12m
+    kube-system   etcd-rhel85-master-2                       1/1     Running   0               2m29s
+    kube-system   kube-apiserver-rhel84-master-1             1/1     Running   0               12m
+    kube-system   kube-apiserver-rhel85-master-2             1/1     Running   0               2m33s
+    kube-system   kube-controller-manager-rhel84-master-1    1/1     Running   1 (2m19s ago)   12m
+    kube-system   kube-controller-manager-rhel85-master-2    1/1     Running   0               2m32s
+    kube-system   kube-proxy-49mrr                           1/1     Running   0               12m
+    kube-system   kube-proxy-jthpq                           1/1     Running   0               2m33s
+    kube-system   kube-proxy-vpzmn                           1/1     Running   0               3m38s
+    kube-system   kube-scheduler-rhel84-master-1             1/1     Running   1 (2m17s ago)   12m
+    kube-system   kube-scheduler-rhel85-master-2             1/1     Running   0               2m32s
     ```
   
     @Worker node:
     ```ruby
-    [root@rhel85 ~]# kubectl get node -o wide
-    NAME            STATUS   ROLES                  AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
-    rhel84          Ready    control-plane,master   57m   v1.25.2   10.49.122.155   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
-    rhel85          Ready    worker                 31m   v1.25.2   10.53.59.47     <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
-    [root@rhel85 ~]#
+    [root@rhel86-worker ~]# kubectl get nodes -o wide
+    NAME              STATUS   ROLES                  AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
+    rhel84-master-1   Ready    control-plane,master   3h4m   v1.25.2   10.51.131.174   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    rhel85-master-2   Ready    control-plane,master   174m   v1.25.2   10.51.128.104   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    rhel86-worker     Ready    worker                 175m   v1.25.2   10.51.151.76    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    [root@rhel86-worker ~]#
     ```
   
 6. Close all Terminal app window once work is complete.
