@@ -1,8 +1,8 @@
-# vmm-rhel8-k8s-cluster
+# vmm-rhel8-k8s-crio-ha-cluster
 
-# VMM K8s Cluster(containerd or docker-ce) - Single/Multi Node Deployment via single Shell Script
+# VMM K8s HA Cluster(crio, multi-master) - Multi Node Deployment via single Shell Script
 
-Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(preferably) bash shell. 
+Note: Multiple node Shell Scripts are customized to run in RHEL8 console(preferably) bash shell. 
 
 1. Load single/Multi Node JCNR/k8s topology file in vmm pod and start the topology:
 
