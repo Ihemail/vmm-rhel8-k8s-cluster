@@ -1,6 +1,6 @@
 # vmm-rhel8-k8s-cluster
 
-# VMM K8s Cluster(containerd or docker-ce or crio) - Single/Multi Node Deployment via single Shell Script
+# VMM K8s Cluster(containerd or docker-ce or crio) - Single/Multi Node Deployment via Shell Script
 
 Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(preferably) bash shell. 
 
