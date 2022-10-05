@@ -103,6 +103,6 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 echo 'alias ku=kubectl' >> ~/.bashrc
 echo 'alias k=k9s' >> ~/.bashrc
 
-echo '\ =====  K8s Cluter(Master-1) installation Complete :)  ===== \'
+echo '\ =====  K8s Cluter (Master-1) installation Complete :)  ===== \'
 
 
