@@ -63,7 +63,7 @@ sleep 120
 
 #echo 'KUBELET_EXTRA_ARGS="--container-runtime=remote --container-runtime-endpoint=unix:///run/crio/crio.sock"' > /etc/sysconfig/kubelet
 sudo systemctl enable kubelet && systemctl restart kubelet
-echo '\ =====  Hello World :)  ===== \'
+echo '\ =====  Hello World :)  ===== \ '
 
 kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/crio/crio.sock
 echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/crio/crio.sock"
@@ -82,6 +82,6 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 echo 'alias ku=kubectl' >> ~/.bashrc
 echo 'alias k=k9s' >> ~/.bashrc
 
-echo '\ =====  K8s Cluter Join(Worker) installation Complete :)  ===== \'
+echo '\ =====  K8s Cluter Join (Worker) installation Complete :)  ===== \'
 
 
