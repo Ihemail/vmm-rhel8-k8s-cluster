@@ -32,17 +32,15 @@ sed -i 's/localhost6 localhost6.localdomain6/localhost6 localhost6.localdomain6\
  
 VER=$(curl -s https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest|grep tag_name | cut -d '"' -f 4|sed 's/v//g')
 echo $VER
-
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v${VER}/cri-dockerd-${VER}.amd64.tgz
 tar xvf cri-dockerd-${VER}.amd64.tgz
 sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
-echo '\ ==== cri-dockerd version :: ==== \'
+echo '\ ==== cri-dockerd version :: ==== \ '
 cri-dockerd --version
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
 sudo mv cri-docker.socket cri-docker.service /etc/systemd/system/
 sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
-
 sudo systemctl daemon-reload
 sudo systemctl enable cri-docker.service
 sudo systemctl enable --now cri-docker.socket
@@ -69,9 +67,9 @@ EOF
 sudo setenforce 0
 dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes &
 sleep 120
-echo 'KUBELET_EXTRA_ARGS="--container-runtime=remote --container-runtime-endpoint=unix:///run/cri-dockerd.sock"' > /etc/sysconfig/kubelet
+#echo 'KUBELET_EXTRA_ARGS="--container-runtime=remote --container-runtime-endpoint=unix:///run/cri-dockerd.sock"' > /etc/sysconfig/kubelet
 sudo systemctl enable kubelet && systemctl restart kubelet
-echo '\ =====  Hello World :)  ===== \'
+echo '\ =====  Hello World :)  ===== \ '
 
 kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/cri-dockerd.sock
 echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/cri-dockerd.sock"
