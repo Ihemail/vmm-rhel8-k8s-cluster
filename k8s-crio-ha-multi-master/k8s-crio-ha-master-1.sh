@@ -72,7 +72,7 @@ echo "    --pod-network-cidr=10.244.0.0/16 --cri-socket /run/crio/crio.sock"
  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
  sudo chown $(id -u):$(id -g) $HOME/.kube/config
  
-echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \'
+echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \ '
 kubeadm token create --print-join-command
 
  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
