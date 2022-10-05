@@ -27,17 +27,15 @@ sed -i 's/localhost6 localhost6.localdomain6/localhost6 localhost6.localdomain6\
  
 VER=$(curl -s https://api.github.com/repos/Mirantis/cri-dockerd/releases/latest|grep tag_name | cut -d '"' -f 4|sed 's/v//g')
 echo $VER
-
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v${VER}/cri-dockerd-${VER}.amd64.tgz
 tar xvf cri-dockerd-${VER}.amd64.tgz
 sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
-echo '\ ==== cri-dockerd version :: ==== \'
+echo '\ ==== cri-dockerd version :: ==== \ '
 cri-dockerd --version
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
 sudo mv cri-docker.socket cri-docker.service /etc/systemd/system/
 sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
-
 sudo systemctl daemon-reload
 sudo systemctl enable cri-docker.service
 sudo systemctl enable --now cri-docker.socket
@@ -79,7 +77,7 @@ sudo kubeadm init \
  echo '****** cat /var/lib/kubelet/kubeadm-flags.env  ******'
  sudo cat /var/lib/kubelet/kubeadm-flags.env
  
-echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \'
+echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \ '
 kubeadm token create --print-join-command
 
  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
