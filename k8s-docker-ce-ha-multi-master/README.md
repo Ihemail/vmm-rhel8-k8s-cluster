@@ -108,9 +108,9 @@ Note: Multiple node Shell Scripts are customized to run in RHEL8 console(prefera
     ```ruby
     [root@rhel84-master-1 ~]# kubectl get nodes -o wide
     NAME              STATUS   ROLES                  AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
-    rhel84-master-1   Ready    control-plane,master   11m     v1.25.2   10.49.122.55    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
-    rhel85-master-2   Ready    control-plane,master   2m8s    v1.25.2   10.49.122.56    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
-    rhel86-worker     Ready    worker                 3m13s   v1.25.2   10.49.122.57    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    rhel84-master-1   Ready    control-plane,master   11m     v1.25.2   10.49.122.55    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
+    rhel85-master-2   Ready    control-plane,master   2m8s    v1.25.2   10.49.122.56    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
+    rhel86-worker     Ready    worker                 3m13s   v1.25.2   10.49.122.57    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
     [root@rhel84-master-1 ~]# kubectl get pods -A
     NAMESPACE     NAME                                       READY   STATUS    RESTARTS        AGE
     kube-system   calico-kube-controllers-58dbc876ff-hm9cc   1/1     Running   0               11m
@@ -136,9 +136,9 @@ Note: Multiple node Shell Scripts are customized to run in RHEL8 console(prefera
     ```ruby
     [root@rhel86-worker ~]# kubectl get nodes -o wide
     NAME              STATUS   ROLES                  AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                               KERNEL-VERSION          CONTAINER-RUNTIME
-    rhel84-master-1   Ready    control-plane,master   3h4m   v1.25.2   10.51.131.174   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
-    rhel85-master-2   Ready    control-plane,master   174m   v1.25.2   10.51.128.104   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
-    rhel86-worker     Ready    worker                 175m   v1.25.2   10.51.151.76    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   cri-o://1.24.2
+    rhel84-master-1   Ready    control-plane,master   3h4m   v1.25.2   10.51.131.174   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
+    rhel85-master-2   Ready    control-plane,master   174m   v1.25.2   10.51.128.104   <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
+    rhel86-worker     Ready    worker                 175m   v1.25.2   10.51.151.76    <none>        Red Hat Enterprise Linux 8.4 (Ootpa)   4.18.0-305.el8.x86_64   docker://20.10.18
     [root@rhel86-worker ~]#
     ```
   
