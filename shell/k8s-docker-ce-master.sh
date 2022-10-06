@@ -66,13 +66,14 @@ sleep 120
 sudo systemctl enable kubelet && systemctl start kubelet
 
 sudo kubeadm config images pull --cri-socket /run/cri-dockerd.sock &
+# sudo kubeadm config images pull --cri-socket /run/cri-dockerd.sock --kubernetes-version v1.24.6 &
 sleep 60
 
 echo "kubeadm init --pod-network-cidr 10.244.0.0/16 --cri-socket /run/cri-dockerd.sock  ##--apiserver-advertise-address=$eth0ip"
 sudo kubeadm init \
   --pod-network-cidr=10.244.0.0/16 \
   --cri-socket /run/cri-dockerd.sock
-  # --kubernetes-version 1.24.6
+  # --kubernetes-version=v1.24.6
 
  sleep 30  
  mkdir -p $HOME/.kube
