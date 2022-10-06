@@ -34,6 +34,12 @@ br_netfilter
 EOF
 modprobe overlay
 modprobe br_netfilter
+cat > /etc/sysctl.d/kubernetes.conf << EOF
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
 
  dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
  #dnf install docker-ce --nobest -y &
@@ -45,13 +51,6 @@ modprobe br_netfilter
  systemctl restart containerd && systemctl enable containerd
  #systemctl enable docker && systemctl start docker
  #dnf update -y && dnf install -y containerd.io docker-ce docker-ce-cli yum-utils device-mapper-persistent-data lvm2 &
-
-cat > /etc/sysctl.d/kubernetes.conf << EOF
-net.ipv4.ip_forward = 1
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-sysctl --system
 
 sudo cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
@@ -67,7 +66,7 @@ sudo setenforce 0
 dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes &
 sleep 120
 sudo systemctl enable kubelet && systemctl start kubelet
-echo '\ =====  Hello World :)  ===== \'
+echo '\ =====  Hello World :)  ===== \ '
 
 kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash
 echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash"
