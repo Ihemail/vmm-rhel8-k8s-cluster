@@ -68,7 +68,7 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
 sudo setenforce 0
 dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes &
-# dnf install -y kubelet-1.24.6-0 kubeadm-1.24.6-0 kubectl-1.24.6-0 cri-tools-1.24.6-0 --disableexcludes=kubernetes &
+# dnf install -y kubelet-1.24.6-0 kubeadm-1.24.6-0 kubectl-1.24.6-0 cri-tools-1.24.2-0 --disableexcludes=kubernetes &
 sleep 120
 sudo systemctl enable kubelet && systemctl start kubelet
 echo '\ =====  Hello World :)  ===== \ '
