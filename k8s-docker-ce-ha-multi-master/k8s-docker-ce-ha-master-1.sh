@@ -80,7 +80,7 @@ sudo kubeadm init --control-plane-endpoint="$master_ip:6443" --upload-certs \
   --pod-network-cidr=10.244.0.0/16 \
   --cri-socket /run/cri-dockerd.sock    ## --kubernetes-version=v1.24.6
 
- sleep 30  
+ sleep 40  
  mkdir -p $HOME/.kube
  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
  sudo chown $(id -u):$(id -g) $HOME/.kube/config
