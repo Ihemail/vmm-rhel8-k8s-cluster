@@ -30,6 +30,12 @@ br_netfilter
 EOF
 modprobe overlay
 modprobe br_netfilter
+cat > /etc/sysctl.d/kubernetes.conf << EOF
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
 
  dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
  #dnf install docker-ce --nobest -y &
@@ -41,13 +47,6 @@ modprobe br_netfilter
  systemctl restart containerd && systemctl enable containerd
  #systemctl enable docker && systemctl start docker
  #dnf update -y && dnf install -y containerd.io docker-ce docker-ce-cli yum-utils device-mapper-persistent-data lvm2 &
-
-cat > /etc/sysctl.d/kubernetes.conf << EOF
-net.ipv4.ip_forward = 1
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-sysctl --system
 
 sudo cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
