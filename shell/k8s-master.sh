@@ -62,7 +62,7 @@ sudo setenforce 0
 dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes &
 sleep 120
 sudo systemctl enable kubelet && systemctl restart kubelet
-echo '\ =====  Hello World :)  ===== \'
+echo '\ =====  Hello World :)  ===== \ '
 
 kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=$eth0ip
 #--kubernetes-version stable-1.25
@@ -71,7 +71,7 @@ sleep 30
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \'
+echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \ '
 kubeadm token create --print-join-command
 
  sleep 10
