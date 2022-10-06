@@ -64,6 +64,7 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
 sudo setenforce 0
 dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes &
+# dnf install -y kubelet-1.24.6-0 kubeadm-1.24.6-0 kubectl-1.24.6-0 cri-tools-1.24.6-0 --disableexcludes=kubernetes &
 sleep 120
 sudo systemctl enable kubelet && systemctl start kubelet
 
@@ -76,7 +77,7 @@ echo "    --pod-network-cidr=10.244.0.0/16 --cri-socket /run/cri-dockerd.sock"
 sudo kubeadm init --control-plane-endpoint="$master_ip:6443" --upload-certs \
   --apiserver-advertise-address=$eth0ip \
   --pod-network-cidr=10.244.0.0/16 \
-  --cri-socket /run/cri-dockerd.sock
+  --cri-socket /run/cri-dockerd.sock    ## --kubernetes-version 1.24.6
 
  sleep 30  
  mkdir -p $HOME/.kube
