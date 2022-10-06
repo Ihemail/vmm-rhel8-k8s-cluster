@@ -67,12 +67,14 @@ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
 EOF
 sudo setenforce 0
 dnf install -y kubelet kubeadm kubectl --disableexcludes=kubernetes &
+# dnf install -y kubelet-1.24.6-0 kubeadm-1.24.6-0 kubectl-1.24.6-0 cri-tools-1.24.6-0 --disableexcludes=kubernetes &
 sleep 120
 sudo systemctl enable kubelet && systemctl start kubelet
 echo '\ =====  Hello World :)  ===== \ '
 
 echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/cri-dockerd.sock"
 kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/cri-dockerd.sock
+## --kubernetes-version 1.24.6
 
  sleep 40
  sshpass -p 'contrail123' scp -o stricthostkeychecking=no -r root@$master_1_ip:/root/.kube $HOME/
