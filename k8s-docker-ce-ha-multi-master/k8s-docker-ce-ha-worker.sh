@@ -75,7 +75,7 @@ echo '\ =====  Hello World :)  ===== \ '
 echo "kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/cri-dockerd.sock"
 kubeadm join $master_ip:6443 --token $master_token --discovery-token-ca-cert-hash $master_token_hash --cri-socket=unix:///run/cri-dockerd.sock
 
- sleep 40
+ sleep 60
  sshpass -p 'contrail123' scp -o stricthostkeychecking=no -r root@$master_1_ip:/root/.kube $HOME/
  kubectl label node $hostname node-role.kubernetes.io/worker=
  curl -sS https://webinstall.dev/k9s | bash
