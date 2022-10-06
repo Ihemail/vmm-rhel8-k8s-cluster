@@ -24,7 +24,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
     vm_openwrt_1 10.49.122.35
     ```
 
-2. All the necessary scripts (for both default contained & docker-ce container runtime) are avaiable under folder shell.
+2. All the necessary scripts (for contained, docker-ce & crio container runtime) are avaiable under folder shell.
 
 3. If you need to change the server hostname then modofy the '/etc/hostname' file and reboot the server via conosle:
    [login: root/contrail123]
