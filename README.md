@@ -92,7 +92,7 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
     [root@rhel85 ~]# sh k8s-crio-worker.sh
     ```
 
-5. Verify the K8s Cluster is up and pods are running properly in both Master & Worker nodes:
+6. Verify the K8s Cluster is up and pods are running properly in both Master & Worker nodes:
 
     @Master node:
     ```ruby
@@ -125,4 +125,12 @@ Note: Single/Multiple node Shell Scripts are customized to run in RHEL8 console(
     [root@rhel85 ~]#
     ```
   
-6. Close all Terminal app window once work is complete.
+7. Close all Terminal app window once work is complete.
+
+8. Extras: Incase IPv6 internet rechability is not working, use below commands to disble IPv6 address assignment/forwarding
+
+    ```ruby
+    sudo sed -i 's/sysctl.d(5)./sysctl.d(5).\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\n/g' /etc/sysctl.conf
+    sudo sysctl --system
+    sudo reboot
+    ```
