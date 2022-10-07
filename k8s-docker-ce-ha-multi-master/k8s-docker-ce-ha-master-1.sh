@@ -33,7 +33,7 @@ echo $VER
 wget https://github.com/Mirantis/cri-dockerd/releases/download/v${VER}/cri-dockerd-${VER}.amd64.tgz
 tar xvf cri-dockerd-${VER}.amd64.tgz
 sudo mv cri-dockerd/cri-dockerd /usr/local/bin/
-echo ' \ ==== cri-dockerd version :: ==== \ '
+echo '\ ==== cri-dockerd version :: ==== \ '
 cri-dockerd --version
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
 wget https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
@@ -85,7 +85,7 @@ sudo kubeadm init --control-plane-endpoint="$master_ip:6443" --upload-certs \
  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
  sudo chown $(id -u):$(id -g) $HOME/.kube/config
  
-echo ' \ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \ '
+echo '\ =====  Execute kubeadm cmd to Join this Kubernetes Cluter ::  ===== \ '
 kubeadm token create --print-join-command
 
  kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
